@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Category;
 
+use App\Enums\CategoryTypeEnum;
 use App\Filters\FuzzyFilter;
 use App\Models\Category;
 use App\Repositories\BaseRepository;
@@ -27,6 +28,9 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
                            ->with(Arr::get($payload, 'with', []))
                            ->defaultSort(Arr::get($payload, 'sort', '-id'))
                            ->allowedSorts(['id', 'created_at', 'updated_at'])
+                           ->when($type = Arr::get($payload, 'type', CategoryTypeEnum::MENU), fn($query) => $query->where('type', $type))
+                           ->when($limit = Arr::get($payload, 'limit', false), fn($query) => $query->limit($limit))
+                           ->when($published = Arr::get($payload, 'published', false), fn($query) => $query->where('published', $published))
                            ->allowedFilters([
                                AllowedFilter::custom('search', new FuzzyFilter(['translations' => ['value']]))->default(Arr::get($payload, 'search'))->nullable(false),
                                AllowedFilter::custom('a_search', new AdvanceFilter())->default(Arr::get($payload, 'a_search', []))->nullable(false),

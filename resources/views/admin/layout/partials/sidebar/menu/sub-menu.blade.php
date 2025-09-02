@@ -13,8 +13,8 @@
             </span>
         @else
             <span class="menu-bullet">
-            <span class="bullet bullet-dot"></span>
-        </span>
+                <span class="bullet bullet-dot"></span>
+            </span>
         @endif
 
         <span class="menu-title">{{$title}}</span>

@@ -99,22 +99,22 @@
                                     ],
                                 ])
 
-{{--                @include('admin.layout.partials.sidebar.menu.menu',[--}}
-{{--                    'title' => trans('_menu.product_interface_management'),--}}
-{{--                    'icon' => 'fad fa-shop fs-2',--}}
-{{--                    'has_permission' => auth()->user()->hasRole(RoleEnum::ADMIN->value),--}}
-{{--                    'sub' => [--}}
-{{--                        [--}}
-{{--                            'title' => trans('_menu.product_interface.all'),--}}
-{{--                            'route' => route('admin.product.index'),--}}
-{{--                            'exact' => true,--}}
-{{--                        ],--}}
-{{--                        [--}}
-{{--                            'title' => trans('_menu.product_interface.create'),--}}
-{{--                            'route' => route('admin.product.create'),--}}
-{{--                        ],--}}
-{{--                    ],--}}
-{{--                ])--}}
+                {{--                @include('admin.layout.partials.sidebar.menu.menu',[--}}
+                {{--                    'title' => trans('_menu.product_interface_management'),--}}
+                {{--                    'icon' => 'fad fa-shop fs-2',--}}
+                {{--                    'has_permission' => auth()->user()->hasRole(RoleEnum::ADMIN->value),--}}
+                {{--                    'sub' => [--}}
+                {{--                        [--}}
+                {{--                            'title' => trans('_menu.product_interface.all'),--}}
+                {{--                            'route' => route('admin.product.index'),--}}
+                {{--                            'exact' => true,--}}
+                {{--                        ],--}}
+                {{--                        [--}}
+                {{--                            'title' => trans('_menu.product_interface.create'),--}}
+                {{--                            'route' => route('admin.product.create'),--}}
+                {{--                        ],--}}
+                {{--                    ],--}}
+                {{--                ])--}}
 
                 @include('admin.layout.partials.sidebar.menu.sub-menu',[
                     'title' => trans('_menu.contact'),
@@ -138,12 +138,12 @@
                     'has_permission' => true,
                 ])
 
-{{--                @include('admin.layout.partials.sidebar.menu.sub-menu',[--}}
-{{--                    'title' => trans('_menu.service'),--}}
-{{--                    'icon' => 'fad fa-toolbox fs-2',--}}
-{{--                    'route' => route('admin.service.index'),--}}
-{{--                    'has_permission' => true,--}}
-{{--                ])--}}
+                {{--                @include('admin.layout.partials.sidebar.menu.sub-menu',[--}}
+                {{--                    'title' => trans('_menu.service'),--}}
+                {{--                    'icon' => 'fad fa-toolbox fs-2',--}}
+                {{--                    'route' => route('admin.service.index'),--}}
+                {{--                    'has_permission' => true,--}}
+                {{--                ])--}}
 
                 @include('admin.layout.partials.sidebar.menu.sub-menu',[
                     'title' => trans('_menu.pages'),

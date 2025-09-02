@@ -20,6 +20,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends BaseWebController
@@ -32,7 +33,13 @@ class CategoryController extends BaseWebController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of(Category::query())
+            $query = Category::query()->select('categories.*');
+
+            if ($request->filled('type')) {
+                $query->where('type', $request->string('type'));
+            }
+
+            return Datatables::of($query)
                              ->addIndexColumn()
                              ->addColumn('actions', function ($row) {
                                  return view('admin.pages.category.index_options', ['row' => $row]);

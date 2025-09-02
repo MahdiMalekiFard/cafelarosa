@@ -1,6 +1,6 @@
 @push('js')
     <script>
-        var datatable_url = '/admin/category';
+        var datatable_url = '{{ request()->url() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}';
         var datatable_columns = [
             {data: 'id', name: 'id'},
             {data: 'title', name: 'title', searchable: true},
