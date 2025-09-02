@@ -1,0 +1,108 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Admin;
+
+use App\Actions\{{model}}\Delete{{model}}Action;
+use App\Actions\{{model}}\Store{{model}}Action;
+use App\Actions\{{model}}\Update{{model}}Action;
+use App\Http\Requests\Store{{model}}Request;
+use App\Http\Requests\Update{{model}}Request;
+use App\Models\{{model}};
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
+class {{model}}Controller extends BaseWebController
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @throws Exception
+     */
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            return Datatables::of({{model}}::query())
+                             ->addIndexColumn()
+                             ->addColumn('actions', function ($row) {
+                                 return view('admin.pages.{{smodel}}.index_options', ['row' => $row]);
+                             })
+                             ->orderColumns(['id'], '-:column $1')
+                             ->make(true);
+        }
+        return view('admin.pages.{{cmodel}}.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.pages.{{cmodel}}.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Store{{model}}Request $request
+     *
+     * @return mixed
+     */
+    public function store(Store{{model}}Request $request)
+    {
+        Store{{model}}Action::run($request->validated());
+        return redirect(route('admin.{{kmodel}}.index'))->withToastSuccess(trans('general.store_success', ['model' => trans('{{cmodel}}.model')]));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show({{model}} ${{cmodel}})
+    {
+        return view('admin.pages.{{cmodel}}.show',compact('{{cmodel}}'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param {{model}} ${{cmodel}}
+     *
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
+    public function edit({{model}} ${{cmodel}})
+    {
+        return view('admin.pages.{{cmodel}}.edit',compact('{{cmodel}}'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Update{{model}}Request $request
+     * @param {{model}}              ${{cmodel}}
+     *
+     * @return mixed
+     */
+    public function update(Update{{model}}Request $request, {{model}} ${{cmodel}})
+    {
+        Update{{model}}Action::run(${{cmodel}},$request->validated());
+        return redirect(route('admin.{{kmodel}}.index'))->withToastSuccess(trans('general.update_success', ['model' => trans('{{cmodel}}.model')]));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param {{model}} ${{cmodel}}
+     *
+     * @return mixed
+     */
+    public function destroy({{model}} ${{cmodel}})
+    {
+        Delete{{model}}Action::run(${{cmodel}});
+        return redirect(route('admin.{{kmodel}}.index'))->withToastSuccess(trans('general.delete_success', ['model' => trans('{{cmodel}}.model')]));
+    }
+}

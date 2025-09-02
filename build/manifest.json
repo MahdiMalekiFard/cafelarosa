@@ -1,0 +1,84 @@
+{
+  "public/fonts/ABeeZee-Regular.otf": {
+    "file": "assets/ABeeZee-Regular-BVzgOfzw.otf",
+    "src": "public/fonts/ABeeZee-Regular.otf"
+  },
+  "public/img/backgrounds/bg-about.jpg": {
+    "file": "assets/bg-about-D1Iukyu3.jpg",
+    "src": "public/img/backgrounds/bg-about.jpg"
+  },
+  "public/img/backgrounds/bg-blog-detail.jpg": {
+    "file": "assets/video1-BpqdnsRZ.jpg",
+    "src": "public/img/backgrounds/bg-blog-detail.jpg"
+  },
+  "public/img/backgrounds/bg-blog-full.jpg": {
+    "file": "assets/bg-blog-full-Cx_jnYdW.jpg",
+    "src": "public/img/backgrounds/bg-blog-full.jpg"
+  },
+  "public/img/backgrounds/bg-blog.jpg": {
+    "file": "assets/video-DYx83KX_.jpg",
+    "src": "public/img/backgrounds/bg-blog.jpg"
+  },
+  "public/img/backgrounds/bg-contact.jpg": {
+    "file": "assets/bg-contact-D8m9yUJU.jpg",
+    "src": "public/img/backgrounds/bg-contact.jpg"
+  },
+  "public/img/backgrounds/bg-gallery.jpg": {
+    "file": "assets/bg-gallery-SdadtG8t.jpg",
+    "src": "public/img/backgrounds/bg-gallery.jpg"
+  },
+  "public/img/backgrounds/bg-gift.jpg": {
+    "file": "assets/bg-gift-DbXxA_bK.jpg",
+    "src": "public/img/backgrounds/bg-gift.jpg"
+  },
+  "public/img/backgrounds/bg-history.jpg": {
+    "file": "assets/bg-history-DkvSOg1r.jpg",
+    "src": "public/img/backgrounds/bg-history.jpg"
+  },
+  "public/img/backgrounds/bg-location.jpg": {
+    "file": "assets/bg-location-Dg8sPk06.jpg",
+    "src": "public/img/backgrounds/bg-location.jpg"
+  },
+  "public/img/backgrounds/bg-menu.jpg": {
+    "file": "assets/bg-menu-CLmHnX_F.jpg",
+    "src": "public/img/backgrounds/bg-menu.jpg"
+  },
+  "public/img/backgrounds/bg-portfolio.jpg": {
+    "file": "assets/bg-about-D1Iukyu3.jpg",
+    "src": "public/img/backgrounds/bg-about.jpg"
+  },
+  "public/img/backgrounds/video1.jpg": {
+    "file": "assets/video1-BpqdnsRZ.jpg",
+    "src": "public/img/backgrounds/bg-blog-detail.jpg"
+  },
+  "public/img/icon/x.png": {
+    "file": "assets/x-DoApwhAR.png",
+    "src": "public/img/icon/x.png"
+  },
+  "public/img/video.jpg": {
+    "file": "assets/video-DYx83KX_.jpg",
+    "src": "public/img/backgrounds/bg-blog.jpg"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/website.css": {
+    "file": "assets/website-e_anAm4N.css",
+    "src": "resources/css/website.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-T1DpEqax.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/scss/app.scss": {
+    "file": "assets/app-D9dKxUI4.css",
+    "src": "resources/scss/app.scss",
+    "isEntry": true
+  }
+}

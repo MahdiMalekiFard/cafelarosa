@@ -1,0 +1,45 @@
+<x-admin.layout.master
+    :stack="[trans('general.page.index.title',['model'=>trans('user.model')])=>route('admin.user.index')]"
+    :title="trans('general.page.create.page_title',['model'=>trans('user.model')])">
+    <x-admin.widget.form-card
+        :title="trans('general.page.create.title',['model'=>trans('user.model')])"
+        :action="route('admin.user.store')"
+        :multipart="1">
+
+        <x-admin.element.input
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.username')"
+            name="name"
+            required="1"
+            :minlength="2"
+        />
+        <x-admin.element.input
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.mobile')"
+            name="mobile"
+            required="1"
+        />
+        <x-admin.element.input
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.email')"
+            name="email"
+            required="1"
+        />
+        <x-admin.element.input
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.password')"
+            name="password"
+            required="1"
+        />
+        <x-admin.element.input
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.password_confirmation')"
+            name="password_confirmation"
+            required="1"
+        />
+
+        @slot('footer')
+            <x-admin.widget.form-sumbit :back-route="route('admin.user.index')"/>
+        @endslot
+    </x-admin.widget.form-card>
+</x-admin.layout.master>

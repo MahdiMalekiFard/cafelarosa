@@ -1,0 +1,13 @@
+@props([
+'title'=>null,
+'stack'=>[],
+])
+@extends('admin.master')
+@section('page-title')
+    <x-admin.layout.page-title
+        :stack="$stack"
+        :title="$title"/>
+@endsection
+@section('content')
+    {{$slot}}
+@endsection

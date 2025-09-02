@@ -1,0 +1,227 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Api\V1;
+
+use App\Models\{{model}};
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Update{{model}}Request;
+use App\Http\Requests\Store{{model}}Request;
+use App\Http\Resources\{{model}}Resource;
+use App\Actions\{{model}}\Store{{model}}Action;
+use App\Actions\{{model}}\Delete{{model}}Action;
+use App\Actions\{{model}}\Update{{model}}Action;
+use App\Repositories\{{model}}\{{model}}RepositoryInterface;
+use App\Services\AdvancedSearchFields\AdvancedSearchFieldsService;
+use Illuminate\Http\Response;
+use OpenApi\Annotations as OA;
+
+class {{model}}Controller extends BaseApiController
+{
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->authorizeResource({{model}}::class);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/{{kmodel}}",
+     *     operationId="get{{model}}s",
+     *     tags={"{{model}}"},
+     *     summary="get {{cmodel}}s list",
+     *     description="Returns list of {{cmodel}}s",
+     *     @OA\Parameter(ref="#/components/parameters/Page"),
+     *     @OA\Parameter(ref="#/components/parameters/PageLimit"),
+     *     @OA\Parameter (ref="#/components/parameters/Filter"),
+     *     @OA\Parameter (ref="#/components/parameters/AdvancedSearch"),
+     *     @OA\Parameter(ref="#/components/parameters/Sort"),
+     *     @OA\Response(response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="message",type="string",example="example message"),
+     *              @OA\Property(property="data",type="array",@OA\Items(ref="#/components/schemas/{{model}}Resource")),
+     *              @OA\Property(property="meta",ref="#/components/schemas/Meta")
+     *          )
+     *     )
+     *     )
+     */
+    public function index({{model}}RepositoryInterface $repository): JsonResponse
+    {
+        return Response::dataWithAdditional(
+            {{model}}Resource::collection($repository->paginate()),
+            additional: [
+                'advance_search_field' => AdvancedSearchFieldsService::generate({{model}}::class),
+                'extra'                => $repository->extra(),
+            ]
+        );
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/{{kmodel}}/{{{cmodel}}}",
+     *     operationId="get{{model}}ByID",
+     *     tags={"{{model}}"},
+     *     summary="Get {{cmodel}} information",
+     *     description="Returns {{cmodel}} data",
+     *     @OA\Parameter(name="{{cmodel}}", required=true,in="path", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="message",type="string",example="example message"),
+     *              @OA\Property(property="data",ref="#/components/schemas/{{model}}Resource")
+     *          )
+     *      )
+     * )
+     */
+    public function show({{model}} ${{cmodel}}): JsonResponse
+    {
+        return Response::data(
+            {{model}}DetailResource::make(${{cmodel}}),
+        );
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/{{kmodel}}",
+     *     operationId="store{{model}}",
+     *     tags={"{{model}}"},
+     *     summary="Store new {{cmodel}}",
+     *     description="Returns new {{cmodel}} data",
+     *     @OA\RequestBody(required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Store{{model}}Request"),
+     *          @OA\MediaType(mediaType="application/x-www-form-urlencoded",@OA\Schema(ref="#/components/schemas/Store{{model}}Request"))
+     *     ),
+     *     @OA\Response(response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="message",type="string",example="example message"),
+     *              @OA\Property(property="data",ref="#/components/schemas/{{model}}Resource")
+     *          )
+     *      )
+     * )
+     */
+    public function store(Store{{model}}Request $request): JsonResponse
+    {
+        $model = Store{{model}}Action::run($request->validated());
+        return Response::data(
+            {{model}}Resource::make($model),
+            trans('general.model_has_stored_successfully',['model'=>trans('{{cmodel}}.model')]),
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/{{kmodel}}/{{{cmodel}}}",
+     *     operationId="update{{model}}",
+     *     tags={"{{model}}"},
+     *     summary="Update existing {{cmodel}}",
+     *     description="Returns updated {{cmodel}} data",
+     *     @OA\Parameter(name="{{cmodel}}",required=true,in="path",@OA\Schema(type="integer")),
+     *     @OA\RequestBody(required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Update{{model}}Request"),
+     *          @OA\MediaType(mediaType="application/x-www-form-urlencoded",@OA\Schema(ref="#/components/schemas/Update{{model}}Request"))
+     *     ),
+     *     @OA\Response(response=202,
+     *          description="Successful operation",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="message",type="string",example="example message"),
+     *              @OA\Property(property="data",ref="#/components/schemas/{{model}}Resource")
+     *          )
+     *      )
+     * )
+     */
+    public function update(Update{{model}}Request $request, {{model}} ${{cmodel}}): JsonResponse
+    {
+        $data = Update{{model}}Action::run(${{cmodel}}, $request->all());
+        return Response::data(
+            {{model}}Resource::make($data),
+            trans('general.model_has_updated_successfully',['model'=>trans('{{cmodel}}.model')]),
+            Response::HTTP_ACCEPTED
+        );
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/{{kmodel}}/{{{cmodel}}}",
+     *      operationId="delete{{model}}",
+     *      tags={"{{model}}"},
+     *      summary="Delete existing {{cmodel}}",
+     *      description="Deletes a record and returns no content",
+     *      @OA\Parameter(name="{{cmodel}}",required=true,in="path",@OA\Schema(type="integer")),
+     *      @OA\Response(response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(type="object",@OA\Property(property="message",type="string",example="example message"))
+     *      )
+     * )
+     */
+    public function destroy({{model}} ${{cmodel}}): JsonResponse
+    {
+        Delete{{model}}Action::run(${{cmodel}});
+        return Response::data(
+            true,
+            trans('general.model_has_deleted_successfully',['model'=>trans('{{cmodel}}.model')]),
+            Response::HTTP_OK
+        );
+    }
+
+//    /**
+//     * @OA\Get(
+//     *     path="/{{kmodel}}/toggle/{{{cmodel}}}",
+//     *     operationId="toggle{{model}}",
+//     *     tags={"{{model}}"},
+//     *     summary="Toggle {{model}}",
+//     *     description="Toggle {{model}}",
+//     *     @OA\Response(response=200,
+//     *         description="Successful operation",
+//     *         @OA\JsonContent(type="object",
+//     *             @OA\Property(property="message", type="string", example="example message"),
+//     *             @OA\Property(property="data", type="object",
+//     *                 @OA\Property(property="user", ref="#/components/schemas/{{model}}Resource")
+//     *             )
+//     *         )
+//     *     )
+//     * )
+//     */
+//    public function toggle({{model}} ${{cmodel}}): JsonResponse
+//    {
+//        $category = Toggle{{model}}Action::run(${{cmodel}});
+//
+//        return Response::data(
+//            {{model}}Resource::make(${{cmodel}}),
+//            trans('general.model_has_toggled_successfully', ['model' => trans('{{cmodel}}.model')]),
+//            Response::HTTP_OK
+//        );
+//    }
+//
+//    /**
+//     * @OA\Get(
+//     *     path="/{{kmodel}}/data",
+//     *     operationId="get{{model}}Data",
+//     *     tags={"{{model}}"},
+//     *     summary="Get {{model}} data",
+//     *     description="Returns {{model}} data",
+//     *     @OA\Response(response=200,
+//     *         description="Successful operation",
+//     *         @OA\JsonContent(type="object",
+//     *             @OA\Property(property="message", type="string", example="example message"),
+//     *             @OA\Property(property="data", type="object",
+//     *                 @OA\Property(property="user", ref="#/components/schemas/{{model}}Resource")
+//     *             )
+//     *         )
+//     *     )
+//     * )
+//     */
+//    public function extraData(Request $request): JsonResponse
+//    {
+//        $this->authorize('create', {{model}}::class);
+//        return Response::data(
+//            [
+//                'user'  => $request->user()
+//            ]
+//        );
+//    }
+}

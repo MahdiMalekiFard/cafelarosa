@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+
+use App\Http\Controllers\Admin\{{model}}Controller;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => '{{kmodel}}', 'as' => '{{kmodel}}.'], function () {
+
+});
+Route::resource('{{kmodel}}',{{model}}Controller::class);
