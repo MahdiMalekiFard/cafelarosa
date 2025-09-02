@@ -9,6 +9,15 @@
     >
         <input hidden name="locale" value="{{app()->getLocale()}}"/>
 
+        <x-admin.element.select
+            parent-class="col-lg-12"
+            :label="trans('validation.attributes.parent_id')"
+            name="parent_id"
+            :options="$parents"
+            :value="$menu->parent_id"
+            required="0"
+        />
+
         <x-admin.element.input
             parent-class="col-lg-12"
             :label="trans('validation.attributes.title')"

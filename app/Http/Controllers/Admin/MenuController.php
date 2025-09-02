@@ -40,6 +40,7 @@ class MenuController extends BaseWebController
                              ->addIndexColumn()
                              ->addColumn('actions', new ActionColumn('admin.pages.menu.index_options'))
                              ->addColumn('title', new TitleColumn)
+                             ->addColumn('parent', fn($row) => $row->parent->title ?? '-')
                              ->filterColumn('title', new TitleFilter)
                              ->addColumn('published', new PublishedColumn)
                              ->addColumn('created_at', new CreatedAtColumn)
@@ -56,7 +57,13 @@ class MenuController extends BaseWebController
      */
     public function create()
     {
-        return view('admin.pages.menu.create');
+        $parents = Menu::query()->where('published', BooleanEnum::ENABLE)
+                       ->whereNull('parent_id')
+                       ->get()->mapWithKeys(function ($item) {
+                return [$item->id => $item->title];
+            });
+
+        return view('admin.pages.menu.create', compact('parents'));
     }
 
     /**
@@ -89,7 +96,13 @@ class MenuController extends BaseWebController
      */
     public function edit(Menu $menu)
     {
-        return view('admin.pages.menu.edit', compact('menu'));
+        $parents = Menu::query()->where('published', BooleanEnum::ENABLE)
+                       ->whereNull('parent_id')
+                       ->get()->mapWithKeys(function ($item) {
+                return [$item->id => $item->title];
+            });
+
+        return view('admin.pages.menu.edit', compact('menu', 'parents'));
     }
 
     /**

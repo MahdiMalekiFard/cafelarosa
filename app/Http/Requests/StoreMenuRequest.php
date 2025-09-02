@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
 
 /**
@@ -26,10 +28,17 @@ class StoreMenuRequest extends FormRequest
     {
         return [
             'title'       => ['required', 'string', 'max:255'],
+            'parent_id'   => ['nullable', 'integer', 'exists:menus,id'],
             'description' => ['required', 'string', 'max:255'],
             'image'       => ['required', 'image', 'max:2048', 'mimes:jpeg,jpg,png'],
-            'left_image'  => ['required', 'image', 'max:2048', 'mimes:jpeg,jpg,png'],
-            'right_image' => ['required', 'image', 'max:2048', 'mimes:jpeg,jpg,png'],
+            'left_image'  => [
+                Rule::requiredIf(fn() => in_array($this->input('parent_id'), [null, ''], true) || $this->input('parent_id') === 'null'),
+                'image', 'max:2048', 'mimes:jpeg,jpg,png',
+            ],
+            'right_image' => [
+                Rule::requiredIf(fn() => in_array($this->input('parent_id'), [null, ''], true) || $this->input('parent_id') === 'null'),
+                'image', 'max:2048', 'mimes:jpeg,jpg,png',
+            ],
             'published'   => ['required', 'boolean'],
         ];
     }

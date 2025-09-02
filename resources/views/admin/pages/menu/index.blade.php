@@ -4,6 +4,7 @@
         var datatable_columns = [
             {data: 'id', name: 'id'},
             {data: 'title', name: 'title', searchable: true},
+            {data: 'parent', name: 'parent', searchable: true},
             {data: 'published', name: 'published'},
             {data: 'created_at', name: 'created_at'},
             {data: 'actions', name: 'actions', orderable: false, searchable: false, width: '1%'}
@@ -18,6 +19,7 @@
         :rows="[
                     trans('datatable.id'),
                     trans('datatable.title'),
+                    trans('datatable.parent_id'),
                     trans('datatable.published'),
                     trans('datatable.created_at'),
                     trans('datatable.actions'),

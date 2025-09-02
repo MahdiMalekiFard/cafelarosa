@@ -30,7 +30,7 @@
             :label="trans('validation.attributes.description')"
             name="description"
             :value="$menuItem->description"
-            required="1"
+            required="0"
         />
 
         <x-admin.element.input

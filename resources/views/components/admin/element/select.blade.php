@@ -91,8 +91,11 @@
                 <option value="{{$case->value}}" {{$case->value==$value?'selected':''}}>{{$case->title()}}</option>
             @endforeach
         @elseif($options)
+            <option value="">{{ $placeholder }}</option> <!-- 👈 default null option -->
             @foreach($options as $val=>$label)
-                <option value="{{$val}}" {{$val==$value?'selected':''}}>{{$label}}</option>
+                <option value="{{$val}}" {{ (string)$val === (string)$value ? 'selected' : '' }}>
+                    {{$label}}
+                </option>
             @endforeach
         @else
             @if($select2)

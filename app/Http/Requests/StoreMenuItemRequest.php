@@ -26,7 +26,7 @@ class StoreMenuItemRequest extends FormRequest
     {
         return [
             'title'         => ['required', 'string', 'max:255'],
-            'description'   => ['required', 'string', 'max:255'],
+            'description'   => ['nullable', 'string', 'max:255'],
             'menu_id'       => ['required', 'exists:menus,id'],
             'normal_price'  => ['required', 'numeric', 'min:1'],
             'special_price' => ['nullable', 'numeric', 'min:1', 'lte:normal_price'],

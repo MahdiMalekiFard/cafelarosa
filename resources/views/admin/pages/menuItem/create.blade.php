@@ -26,7 +26,7 @@
             parent-class="col-lg-12"
             :label="trans('validation.attributes.description')"
             name="description"
-            required="1"
+            required="0"
         />
 
         <x-admin.element.input

@@ -9,6 +9,7 @@ use App\Traits\HasTranslationAuto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,7 +28,7 @@ class Menu extends Model implements HasMedia
     use SchemalessAttributesTrait;
 
     protected $fillable = [
-        'published', 'languages'
+        'published', 'languages', 'parent_id',
     ];
 
     protected $casts = [
@@ -83,6 +84,16 @@ class Menu extends Model implements HasMedia
     public function items(): HasMany
     {
         return $this->hasMany(MenuItem::class, 'menu_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(__CLASS__, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(__CLASS__, 'parent_id');
     }
 
     /*

@@ -95,9 +95,11 @@ class MenuItemController extends BaseWebController
      */
     public function edit(MenuItem $menuItem)
     {
-        $menus = Menu::query()->where('published', BooleanEnum::ENABLE)->get()->mapWithKeys(function ($item) {
-            return [$item->id => $item->title];
-        });
+        $menus = Menu::query()->where('published', BooleanEnum::ENABLE)
+                     ->whereNotNull('parent_id')
+                     ->get()->mapWithKeys(function ($item) {
+                return [$item->id => $item->title];
+            });
 
         return view('admin.pages.menuItem.edit', compact('menuItem', 'menus'));
     }
