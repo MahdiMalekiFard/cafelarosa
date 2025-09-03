@@ -18,8 +18,18 @@ class FileService
 
     public function addMedia($model, $requestImageName = 'image', $collection = 'image'): void
     {
+        \Log::info("FileService::addMedia called", [
+            'requestImageName' => $requestImageName,
+            'collection' => $collection,
+            'hasFile' => request()->hasFile($requestImageName),
+            'files' => request()->allFiles(),
+        ]);
+        
         if (request()->hasFile($requestImageName)) {
             $model->addMediaFromRequest($requestImageName)->toMediaCollection($collection);
+            \Log::info("Media added successfully", ['requestImageName' => $requestImageName, 'collection' => $collection]);
+        } else {
+            \Log::warning("No file found for upload", ['requestImageName' => $requestImageName]);
         }
     }
 

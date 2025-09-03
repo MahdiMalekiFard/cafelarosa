@@ -6951,18 +6951,65 @@ form.s2 {
                 /* add arrow on the right */
                 /* add a big arrow only on clickable buttons */
                 .sub-menu:not([disabled])::after {
-                    content: "▾"; /* down arrow */
+                    content: "";
                     position: absolute;
                     right: 15px;
                     top: 50%;
+                    width: 0;
+                    height: 0;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    border-top: 12px solid $color-submenu;
+                    -webkit-transform: translateY(-50%);
+                    -moz-transform: translateY(-50%);
+                    -ms-transform: translateY(-50%);
+                    -o-transform: translateY(-50%);
                     transform: translateY(-50%);
-                    font-size: 24px;          /* bigger arrow */
+                    -webkit-transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+                    -moz-transition: transform 0.3s ease, -moz-transform 0.3s ease;
+                    -ms-transition: transform 0.3s ease, -ms-transform 0.3s ease;
+                    -o-transition: transform 0.3s ease, -o-transform 0.3s ease;
+                    transition: transform 0.3s ease;
+                }
+
+                /* Fallback: Unicode arrow for browsers that don't support CSS triangles properly */
+                .sub-menu:not([disabled])::before {
+                    content: "▾"; /* down arrow - Unicode U+25BE */
+                    position: absolute;
+                    right: 15px;
+                    top: 50%;
+                    -webkit-transform: translateY(-50%);
+                    -moz-transform: translateY(-50%);
+                    -ms-transform: translateY(-50%);
+                    -o-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    font-size: 20px;
                     line-height: 1;
+                    font-family: Arial, sans-serif;
+                    color: $color-submenu;
+                    display: none; /* Hidden by default, shown via JS if CSS triangles don't work */
+                    -webkit-transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+                    -moz-transition: transform 0.3s ease, -moz-transform 0.3s ease;
+                    -ms-transition: transform 0.3s ease, -ms-transform 0.3s ease;
+                    -o-transition: transform 0.3s ease, -o-transform 0.3s ease;
                     transition: transform 0.3s ease;
                 }
 
                 /* when expanded (aria-expanded="true"), rotate arrow */
                 .sub-menu[aria-expanded="true"]::after {
+                    -webkit-transform: translateY(-50%) rotate(180deg);
+                    -moz-transform: translateY(-50%) rotate(180deg);
+                    -ms-transform: translateY(-50%) rotate(180deg);
+                    -o-transform: translateY(-50%) rotate(180deg);
+                    transform: translateY(-50%) rotate(180deg); /* arrow flips up */
+                }
+
+                /* when expanded (aria-expanded="true"), rotate fallback unicode arrow */
+                .sub-menu[aria-expanded="true"]::before {
+                    -webkit-transform: translateY(-50%) rotate(180deg);
+                    -moz-transform: translateY(-50%) rotate(180deg);
+                    -ms-transform: translateY(-50%) rotate(180deg);
+                    -o-transform: translateY(-50%) rotate(180deg);
                     transform: translateY(-50%) rotate(180deg); /* arrow flips up */
                 }
 
@@ -7024,6 +7071,10 @@ form.s2 {
     overflow: hidden;
     height: 0;           /* animate this */
     opacity: 0;
+    -webkit-transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
+    -moz-transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
+    -ms-transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
+    -o-transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
     transition: height 300ms ease-in-out, opacity 300ms ease-in-out;
     will-change: height; /* smoother */
 }

@@ -50,7 +50,7 @@ return [
         'MEDIA_DISK' => [
             'driver'     => 'local',
             'root'       => env('MEDIA_LIBRARY_STORAGE_ROOT_PATH', storage_path('app/public/medialibrary')),
-            'url'        => env('APP_URL') . '/storage/app/public/medialibrary',
+            'url'        => env('APP_URL') . '/storage/medialibrary',
             'visibility' => 'public',
         ],
 
