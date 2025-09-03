@@ -225,6 +225,7 @@ return [
         'price'                  => 'Price',
         'normal_price'           => 'Normal Price',
         'special_price'          => 'Special Price',
+        'favorite'               => 'Favorite',
         'pic'                    => 'Pic',
         'link'                   => 'Link',
         'user_uuid'              => 'User',

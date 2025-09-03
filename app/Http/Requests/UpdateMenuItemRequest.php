@@ -34,6 +34,7 @@ class UpdateMenuItemRequest extends FormRequest
     {
         $this->merge([
             'published'     => true,
+            'favorite'      => (bool) $this->input('favorite', false),
             'special_price' => $this->special_price ?? $this->input('normal_price'),
         ]);
     }

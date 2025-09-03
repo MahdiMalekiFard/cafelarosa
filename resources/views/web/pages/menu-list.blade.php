@@ -24,82 +24,129 @@
             <div class="container container-max-width">
                 <div class="row">
                     <div class="menu-content">
+
                         @foreach($menus as $menu)
-                            @php
-                                $items = $menu?->items()->where('published', \App\Enums\BooleanEnum::ENABLE)->get();
-                                $firstItems = $items->take(6);
-                                $restItems = $items->slice(6);
-                            @endphp
-                            <div class="menu-main {{ $loop->index % 2 == 0 ? 'right' : '' }}">
-                                @if($loop->index % 2 == 0)
-                                    <div class="image" data-aos-duration="1000" data-aos="fade-right">
+                            <div class="menu-main {{ $loop->index % 2 === 0 ? 'right' : '' }}">
+
+                                @if($loop->index % 2 === 0)
+                                    {{-- IMAGE (left on odd, right on even via .right) --}}
+                                    <div class="image" data-aos-duration="1000" data-aos="{{ $loop->index % 2 == 0 ? 'fade-right' : 'fade-left' }}">
                                         <img src="{{ $menu?->getFirstMediaUrl('image') }}" alt="">
                                     </div>
+
+                                    {{-- FIRST BUCKETS (stay beside image) --}}
                                     <ul class="menu-list">
-                                        <p class="sub-title" data-aos-duration="1000" data-aos="fade-right">{{ $menu?->description }}</p>
-                                        <h4 data-aos-duration="1000" data-aos="fade-right">{{ $menu?->title }}</h4>
-                                        @foreach($firstItems as $menuItem)
-                                            <li data-aos-duration="1000" data-aos="fade-up">
-                                                <h5 class="name">
-                                                    <span class="txt full-title">{{ $menuItem?->title }}</span>
-                                                    <span class="txt title-with-price">
-                                                        {{ $menuItem?->title }} <br class="break-point"> ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
-                                                    </span>
-                                                    <span class="price">{{ $menuItem?->special_price }} kr</span>
-                                                </h5>
-                                                <p>{{ $menuItem?->description }}</p>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                    @if($restItems->count())
-                                        <ul class="menu-list full-width">
-                                            @foreach($restItems as $menuItem)
+                                        <p class="sub-title" data-aos-duration="1000" data-aos="{{ $loop->index % 2 === 0 ? 'fade-right' : 'fade-up' }}">
+                                            {{ $menu?->description }}
+                                        </p>
+                                        <h4 data-aos-duration="1000" data-aos="{{ $loop->index % 2 === 0 ? 'fade-right' : 'fade-up' }}">
+                                            {{ $menu?->title }}
+                                        </h4>
+
+                                        @foreach($menu->firstBuckets as $bucket)
+                                            <h4 class="sub-menu" data-aos-duration="1000" data-aos="{{ $loop->parent->index % 2 == 0 ? 'fade-right' : 'fade-up' }}">
+                                                {{ $bucket['submenu']->title }}
+                                            </h4>
+
+                                            @foreach($bucket['items'] as $menuItem)
                                                 <li data-aos-duration="1000" data-aos="fade-up">
                                                     <h5 class="name">
                                                         <span class="txt full-title">{{ $menuItem?->title }}</span>
                                                         <span class="txt title-with-price">
-                                                            {{ $menuItem?->title }} <br class="break-point"> ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
-                                                        </span>
+                                                        {{ $menuItem?->title }} <br class="break-point">
+                                                        ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
+                                                    </span>
                                                         <span class="price">{{ $menuItem?->special_price }} kr</span>
                                                     </h5>
                                                     <p>{{ $menuItem?->description }}</p>
                                                 </li>
                                             @endforeach
+                                        @endforeach
+                                    </ul>
+
+                                    {{-- FULL-WIDTH (spans both columns under image+first list) --}}
+                                    @if($menu->restBuckets->isNotEmpty())
+                                        <ul class="menu-list full-width">
+                                            @foreach($menu->restBuckets as $bucket)
+                                                @if($bucket['show_header'] ?? true)
+                                                    <h4 class="sub-menu" data-aos-duration="1000" data-aos="fade-up">
+                                                        {{ $bucket['submenu']->title }}
+                                                    </h4>
+                                                @endif
+                                                @foreach($bucket['items'] as $menuItem)
+                                                    <li data-aos-duration="1000" data-aos="fade-up">
+                                                        <h5 class="name">
+                                                            <span class="txt full-title">{{ $menuItem?->title }}</span>
+                                                            <span class="txt title-with-price">
+                                                          {{ $menuItem?->title }} <br class="break-point">
+                                                          ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
+                                                        </span>
+                                                            <span class="price">{{ $menuItem?->special_price }} kr</span>
+                                                        </h5>
+                                                        <p>{{ $menuItem?->description }}</p>
+                                                    </li>
+                                                @endforeach
+                                            @endforeach
                                         </ul>
                                     @endif
                                 @else
+                                    {{-- FIRST BUCKETS (stay beside image) --}}
                                     <ul class="menu-list">
-                                        <p class="sub-title" data-aos-duration="1000" data-aos="fade-up">{{ $menu?->description }}</p>
-                                        <h4 data-aos-duration="1000" data-aos="fade-up">{{ $menu?->title }}</h4>
-                                        @foreach($firstItems as $menuItem)
-                                            <li data-aos-duration="1000" data-aos="fade-up">
-                                                <h5 class="name">
-                                                    <span class="txt full-title">{{ $menuItem?->title }}</span>
-                                                    <span class="txt title-with-price">
-                                                        {{ $menuItem?->title }} <br class="break-point"> ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
-                                                    </span>
-                                                    <span class="price">{{ $menuItem?->special_price }} kr</span>
-                                                </h5>
-                                                <p>{{ $menuItem?->description }}</p>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                    <div class="image" data-aos-duration="1000" data-aos="fade-left">
-                                        <img src="{{ $menu?->getFirstMediaUrl('image') }}" alt="">
-                                    </div>
-                                    @if($restItems->count())
-                                        <ul class="menu-list full-width">
-                                            @foreach($restItems as $menuItem)
+                                        <p class="sub-title" data-aos-duration="1000" data-aos="{{ $loop->index % 2 === 0 ? 'fade-right' : 'fade-up' }}">
+                                            {{ $menu?->description }}
+                                        </p>
+                                        <h4 data-aos-duration="1000" data-aos="{{ $loop->index % 2 === 0 ? 'fade-right' : 'fade-up' }}">
+                                            {{ $menu?->title }}
+                                        </h4>
+
+                                        @foreach($menu->firstBuckets as $bucket)
+                                            <h4 class="sub-menu" data-aos-duration="1000" data-aos="{{ $loop->parent->index % 2 == 0 ? 'fade-right' : 'fade-up' }}">
+                                                {{ $bucket['submenu']->title }}
+                                            </h4>
+
+                                            @foreach($bucket['items'] as $menuItem)
                                                 <li data-aos-duration="1000" data-aos="fade-up">
                                                     <h5 class="name">
                                                         <span class="txt full-title">{{ $menuItem?->title }}</span>
                                                         <span class="txt title-with-price">
-                                            	{{ $menuItem?->title }} <br class="break-point"> ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
-                                                </span>
+                                                        {{ $menuItem?->title }} <br class="break-point">
+                                                        ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
+                                                    </span>
                                                         <span class="price">{{ $menuItem?->special_price }} kr</span>
                                                     </h5>
                                                     <p>{{ $menuItem?->description }}</p>
                                                 </li>
+                                            @endforeach
+                                        @endforeach
+                                    </ul>
+
+                                    {{-- IMAGE (left on odd, right on even via .right) --}}
+                                    <div class="image" data-aos-duration="1000" data-aos="{{ $loop->index % 2 == 0 ? 'fade-right' : 'fade-left' }}">
+                                        <img src="{{ $menu?->getFirstMediaUrl('image') }}" alt="">
+                                    </div>
+
+                                    {{-- FULL-WIDTH (spans both columns under image+first list) --}}
+                                    @if($menu->restBuckets->isNotEmpty())
+                                        <ul class="menu-list full-width">
+                                            @foreach($menu->restBuckets as $bucket)
+                                                @if($bucket['show_header'] ?? true)
+                                                    <h4 class="sub-menu" data-aos-duration="1000" data-aos="fade-up">
+                                                        {{ $bucket['submenu']->title }}
+                                                    </h4>
+                                                @endif
+                                                @foreach($bucket['items'] as $menuItem)
+                                                    <li data-aos-duration="1000" data-aos="fade-up">
+                                                        <h5 class="name">
+                                                            <span class="txt full-title">{{ $menuItem?->title }}</span>
+                                                            <span class="txt title-with-price">
+                                                          {{ $menuItem?->title }} <br class="break-point">
+                                                          ( <span class="p-price">{{ $menuItem?->special_price }}</span> kr )
+                                                        </span>
+                                                            <span class="price">{{ $menuItem?->special_price }} kr</span>
+                                                        </h5>
+                                                        <p>{{ $menuItem?->description }}</p>
+                                                    </li>
+                                                @endforeach
                                             @endforeach
                                         </ul>
                                     @endif

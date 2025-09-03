@@ -29,6 +29,7 @@ class StoreMenuItemAction
      *     normal_price:string,
      *     special_price:string,
      *     published:string,
+     *     favorite:boolean
      *     } $payload
      * @return MenuItem
      * @throws Throwable
@@ -41,6 +42,9 @@ class StoreMenuItemAction
                 'published', 'normal_price', 'special_price', 'menu_id',
             ]));
             $this->syncTranslationAction->handle($model, Arr::only($payload, ['title', 'description']));
+
+            $model->extra()->set('favorite', Arr::get($payload, 'favorite', false));
+            $model->save();
 
             return $model->refresh();
         });

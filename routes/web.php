@@ -48,7 +48,7 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}']], 
     Route::get('/', function () {
 
         $blogs = resolve(BlogRepositoryInterface::class)->get(['limit' => 6, 'published' => BooleanEnum::ENABLE]);
-        $menus = resolve(MenuRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE]);
+        $menus = resolve(MenuRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE, 'has_parent' => false, 'sort' => 'id']);
         $sliders = resolve(SliderRepositoryInterface::class)->get();
         $about = resolve(PageRepositoryInterface::class)->query()->where('type', PageTypeEnum::ABOUT_US)->first();
         $opinions = resolve(OpinionRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE]);

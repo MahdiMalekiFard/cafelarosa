@@ -44,6 +44,12 @@
             name="special_price"
         />
 
+        <x-admin.element.checkbox
+            parent-class="col-lg-6"
+            :label="trans('validation.attributes.favorite')"
+            name="favorite"
+        />
+
         @slot('footer')
             <x-admin.widget.form-sumbit :back-route="route('admin.menu-item.index')"/>
         @endslot

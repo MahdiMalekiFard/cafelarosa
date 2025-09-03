@@ -27,6 +27,7 @@ class MenuRepository extends BaseRepository implements MenuRepositoryInterface
                            ->with(Arr::get($payload, 'with', []))
                            ->defaultSort(Arr::get($payload, 'sort', '-id'))
                            ->allowedSorts(['id', 'created_at', 'updated_at'])
+                           ->when(!$hasParent = Arr::get($payload, 'has_parent', true), fn($query) => $query->whereNull('parent_id'))
                            ->when($limit = Arr::get($payload, 'limit', false), fn($query) => $query->limit($limit))
                            ->when($published = Arr::get($payload, 'published', false), fn($query) => $query->where('published', $published))
                            ->allowedFilters([

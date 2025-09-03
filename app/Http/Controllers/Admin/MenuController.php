@@ -140,7 +140,46 @@ class MenuController extends BaseWebController
 
     public function menuList(MenuRepositoryInterface $repository)
     {
-        $menus = $repository->query(['sort' => 'created_at'])->where('published', BooleanEnum::ENABLE)->get();
+//        $menus = $repository->query(['sort' => 'created_at', 'has_parent' => false])->where('published', BooleanEnum::ENABLE)->get();
+        $menus = $repository->query(['sort' => 'created_at', 'has_parent' => false])
+                            ->with([
+                                'children' => fn($q) => $q->where('published', \App\Enums\BooleanEnum::ENABLE)
+                                                          ->with(['items' => fn($iq) => $iq->where('published', \App\Enums\BooleanEnum::ENABLE)]),
+                            ])
+                            ->where('published', \App\Enums\BooleanEnum::ENABLE)
+                            ->get()
+                            ->map(function ($menu) {
+                                $limit = 4; // how many items stay next to the image
+                                $remain = $limit;
+
+                                $firstBuckets = []; // [{submenu, items}]
+                                $restBuckets = [];  // [{submenu, items}]
+                                $firstIds = [];
+
+                                foreach ($menu->children as $child) {
+                                    $items = $child->items;
+                                    $take  = min($remain, $items->count());
+
+                                    if ($take > 0) {
+                                        $firstBuckets[] = ['submenu' => $child, 'items' => $items->take($take)->values()];
+                                        $firstIds[] = $child->id;
+                                        $remain -= $take;
+                                    }
+                                    if ($items->count() > $take) {
+                                        $restBuckets[] = [
+                                            'submenu'     => $child,
+                                            'items'       => $items->slice($take)->values(),
+                                            'show_header' => !in_array($child->id, $firstIds, true), // hide if already shown
+                                        ];
+                                    }
+                                }
+
+                                $menu->firstBuckets = collect($firstBuckets);
+                                $menu->restBuckets = collect($restBuckets);
+                                return $menu;
+                            });
+
+
         return view('web.pages.menu-list', compact('menus'));
     }
 }

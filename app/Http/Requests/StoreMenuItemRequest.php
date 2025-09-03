@@ -31,6 +31,7 @@ class StoreMenuItemRequest extends FormRequest
             'normal_price'  => ['required', 'numeric', 'min:1'],
             'special_price' => ['nullable', 'numeric', 'min:1', 'lte:normal_price'],
             'published'     => ['required', 'boolean'],
+            'favorite'      => ['required', 'boolean'],
         ];
     }
 
@@ -38,6 +39,7 @@ class StoreMenuItemRequest extends FormRequest
     {
         $this->merge([
             'published'     => true,
+            'favorite'      => (bool)$this->input('favorite', false),
             'special_price' => $this->special_price ?? $this->input('normal_price'),
         ]);
     }

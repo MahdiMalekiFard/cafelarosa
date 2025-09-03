@@ -1,3 +1,4 @@
+@php use App\Models\Menu; @endphp
 @php @endphp
 @extends('web.layout.main')
 
@@ -75,7 +76,7 @@
     </div>
 
     <section class="about">
-{{--        <div class="shape"></div>--}}
+        {{--        <div class="shape"></div>--}}
         <div class="container">
             <div class="row">
                 <div class="col-xl-6 col-md-12">
@@ -99,7 +100,7 @@
     </section>
 
     <section class="opening">
-{{--        <div class="shape"></div>--}}
+        {{--        <div class="shape"></div>--}}
         <div class="container">
             <div class="row">
                 <div class="col-xl-7 col-md-12">
@@ -166,8 +167,13 @@
                                 <div class="content-inner {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $index }}">
                                     <div class="container_inner">
                                         @php
-                                            /** @var \App\Models\Menu $menu */
-                                            $items = $menu?->items()->where('published', \App\Enums\BooleanEnum::ENABLE)->limit(6)->get();
+                                            /** @var Menu $menu */
+                                            $children = $menu?->children()->where('published', \App\Enums\BooleanEnum::ENABLE)->get();
+                                            $items = $children->flatMap(fn($child) => $child->items()
+                                                                    ->where('published', \App\Enums\BooleanEnum::ENABLE)
+                                                                    ->whereJsonContains('extra_attributes', ['favorite' => true])
+                                                                    ->get()
+                                                                );
                                         @endphp
                                         <div class="left-img">
                                             <img src="{{ $menu->getFirstMediaUrl('left_image') }}" alt="menu_left_img">
@@ -215,7 +221,7 @@
     </section>
 
     <section class="choose">
-{{--        <div class="shape"></div>--}}
+        {{--        <div class="shape"></div>--}}
         <div class="container">
             <div class="row">
                 <div class="col-xl-6 col-md-12">
