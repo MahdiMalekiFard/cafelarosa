@@ -140,7 +140,6 @@ class MenuController extends BaseWebController
 
     public function menuList(MenuRepositoryInterface $repository)
     {
-//        $menus = $repository->query(['sort' => 'created_at', 'has_parent' => false])->where('published', BooleanEnum::ENABLE)->get();
         $menus = $repository->query(['sort' => 'created_at', 'has_parent' => false])
                             ->with([
                                 'children' => fn($q) => $q->where('published', \App\Enums\BooleanEnum::ENABLE)
