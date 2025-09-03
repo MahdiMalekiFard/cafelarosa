@@ -7007,6 +7007,18 @@ form.s2 {
     cursor: pointer;
 }
 
+/* hide all submenu buttons until their section is ready */
+.menu-main:not(.is-ready) .submenu-toggle {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* once ready (see JS), buttons may animate with AOS */
+.menu-main.is-ready .submenu-toggle {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 /* collapsed by default */
 .submenu-panel{
     overflow: hidden;

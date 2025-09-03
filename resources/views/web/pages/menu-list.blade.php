@@ -51,7 +51,9 @@
                                             <button type="button"
                                                     class="submenu-toggle sub-menu"
                                                     disabled
-                                                    style="cursor: default; opacity: 1;">
+                                                    style="cursor: default; opacity: 1;"
+                                                    data-aos-duration="1000" data-aos="fade-up"
+                                            >
                                                 {{ $bucket['submenu']->title }}
                                             </button>
 
@@ -87,6 +89,7 @@
                                                         data-target="#{{ $sid }}"
                                                         aria-controls="{{ $sid }}"
                                                         aria-expanded="false"
+                                                        data-aos-duration="1000" data-aos="fade-up"
                                                         {{-- no data-initial="open" here so they start closed --}}
                                                     >
                                                         {{ $bucket['submenu']->title }}
@@ -130,7 +133,10 @@
                                             <button type="button"
                                                     class="submenu-toggle sub-menu"
                                                     disabled
-                                                    style="cursor: default; opacity: 1;">
+                                                    style="cursor: default;"
+                                                    data-aos-duration="1000"
+                                                    data-aos="fade-up"
+                                            >
                                                 {{ $bucket['submenu']->title }}
                                             </button>
 
@@ -171,6 +177,7 @@
                                                         data-target="#{{ $sid }}"
                                                         aria-controls="{{ $sid }}"
                                                         aria-expanded="false"
+                                                        data-aos-duration="1000" data-aos="fade-up"
                                                         {{-- no data-initial="open" here so they start closed --}}
                                                     >
                                                         {{ $bucket['submenu']->title }}
@@ -304,4 +311,55 @@
         })();
     </script>
 
+    <script>
+        (function () {
+            // Observe when a section enters the viewport
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const sec = entry.target;
+                    if (!entry.isIntersecting) return;
+                    sec.__inView = true;
+                    maybeReady(sec);
+                });
+            }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+            // Called when either the image loads or the section comes into view
+            function maybeReady(section) {
+                if (section.__imageLoaded && section.__inView) {
+                    if (!section.classList.contains('is-ready')) {
+                        section.classList.add('is-ready');
+                        // make AOS recalc so the newly visible buttons fade like items/images
+                        if (window.AOS && typeof AOS.refresh === 'function') {
+                            (AOS.refreshHard && AOS.refreshHard()) || AOS.refresh();
+                        }
+                    }
+                }
+            }
+
+            // Setup for each menu section
+            document.querySelectorAll('.menu-main').forEach(section => {
+                section.__imageLoaded = false;
+                section.__inView = false;
+
+                // start observing viewport visibility
+                io.observe(section);
+
+                const img = section.querySelector('.image img');
+                if (!img) {
+                    section.__imageLoaded = true;
+                    maybeReady(section);
+                    return;
+                }
+
+                // mark image loaded (from cache or after load)
+                if (img.complete && img.naturalWidth > 0) {
+                    section.__imageLoaded = true;
+                    maybeReady(section);
+                } else {
+                    img.addEventListener('load', () => { section.__imageLoaded = true; maybeReady(section); }, { once: true });
+                    img.addEventListener('error', () => { section.__imageLoaded = true; maybeReady(section); }, { once: true });
+                }
+            });
+        })();
+    </script>
 @endpush
