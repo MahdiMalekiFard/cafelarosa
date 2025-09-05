@@ -44,9 +44,9 @@ class UpdateMenuAction
             $this->repository->update($menu, Arr::only($payload, ['published', 'parent_id']));
             $this->syncTranslationAction->handle($menu, Arr::only($payload, ['title', 'description']));
             
-            $this->fileService->addMedia($menu);
-            $this->fileService->addMedia($menu, 'left_image', 'left_image');
-            $this->fileService->addMedia($menu, 'right_image', 'right_image');
+            $this->fileService->updateMedia($menu);
+            $this->fileService->updateMedia($menu, 'left_image', 'left_image');
+            $this->fileService->updateMedia($menu, 'right_image', 'right_image');
 
             return $menu->refresh();
         });

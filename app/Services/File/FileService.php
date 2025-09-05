@@ -33,6 +33,33 @@ class FileService
         }
     }
 
+    public function updateMedia($model, $requestImageName = 'image', $collection = 'image'): void
+    {
+        \Log::info("FileService::updateMedia called", [
+            'requestImageName' => $requestImageName,
+            'collection' => $collection,
+            'hasFile' => request()->hasFile($requestImageName),
+            'files' => request()->allFiles(),
+        ]);
+        
+        if (request()->hasFile($requestImageName)) {
+            // Clear existing media in the collection
+            $existingMedia = $model->getMedia($collection);
+            if (count($existingMedia) > 0) {
+                foreach ($existingMedia as $media) {
+                    $media->delete();
+                }
+                \Log::info("Existing media deleted", ['collection' => $collection, 'count' => count($existingMedia)]);
+            }
+            
+            // Add new media
+            $model->addMediaFromRequest($requestImageName)->toMediaCollection($collection);
+            \Log::info("New media added successfully", ['requestImageName' => $requestImageName, 'collection' => $collection]);
+        } else {
+            \Log::warning("No file found for upload", ['requestImageName' => $requestImageName]);
+        }
+    }
+
     public function addFile($model, $file, $collection = 'image', $save = false): void
     {
         if ($file) {
