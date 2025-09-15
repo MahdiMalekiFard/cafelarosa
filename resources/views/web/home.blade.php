@@ -108,9 +108,8 @@
                         <div class="block-text">
                             <h3 class="title" data-aos-duration="1000" data-aos="fade-up">{{ trans('home.opening_time_hours') }}</h3>
                             <ul>
-                                <li data-aos-duration="1000" data-aos="fade-up"><span>{{ trans('home.sidebar.opening_hours.Monday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }}:</span> 11:30 - 21:00</li>
-                                <li data-aos-duration="1000" data-aos="fade-up"><span>{{ trans('home.sidebar.opening_hours.Friday') }}, {{ trans('home.sidebar.opening_hours.Saturday') }}:</span> 11:30 - 22:00</li>
-                                <li data-aos-duration="1000" data-aos="fade-up"><span>{{ trans('home.sidebar.opening_hours.Sunday') }}:</span> 16:00 - 21:00</li>
+                                <li data-aos-duration="1000" data-aos="fade-up"><span>{{ trans('home.sidebar.opening_hours.Sunday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }}:</span> 16:00 - 21:00</li>
+                                <li data-aos-duration="1000" data-aos="fade-up"><span>{{ trans('home.sidebar.opening_hours.Friday') }}, {{ trans('home.sidebar.opening_hours.Saturday') }}:</span> 16:00 - 21:30</li>
                             </ul>
 
                             <div class="d-flex">

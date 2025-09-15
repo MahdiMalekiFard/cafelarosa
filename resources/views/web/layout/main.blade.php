@@ -4,10 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title>Café La Rosa Kolding</title>
-    <meta name="author" content="mahdi malekifard">
-    <meta name="developer" content="https://karnoweb.com">
-    <meta name="keywords"
-          content="café near me, best café, cozy café, café with Wi-Fi, late-night café, pet-friendly café, coffee shop, café menu, tea café, espresso café, latte art café">
+    <meta name="keywords" content="
+        Café La Rosa Kolding, italiensk café Kolding, autentiske italienske retter,
+        lasagne, tagliatelle al ragù, maccheroni all’amatriciana, tagliatelle al salmone,
+        risotto ai funghi porcini, grill entrecote, pesce spada alla pizzaiola, gelato misto,
+        omelette farciti, formaggi misti, panino di Parma, kaffe bar Kolding,
+        økologiske retter, vegetarretter, vinmenu, cocktails, brunch Kolding"
+    >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="/css/bootstrap.css">
@@ -16,7 +19,7 @@
     <link rel="stylesheet" href="/css/all.min.css">
     <link rel="stylesheet" href="/css/aos.css">
     <!-- Favicon and Touch Icons  -->
-    <link rel="shortcut icon" href="/img/favicon.png">
+    <link rel="shortcut icon" href="/img/favicon2.png">
     <link rel="apple-touch-icon-precomposed" href="/img/favicon.png">
     <script src="/js/highcharts.js"></script>
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
@@ -99,9 +102,8 @@
                         <p>Info@cafelarosa.dk</p>
                         <div class="line"></div>
                         <p>{{ trans('home.sidebar.opening_hours.text') }} <br />
-                            {{ trans('home.sidebar.opening_hours.Monday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }} : 11:30 – 21:00,<br />
-                            {{ trans('home.sidebar.opening_hours.Friday') }} , {{ trans('home.sidebar.opening_hours.Saturday') }} : 11:30 – 22:00,<br />
-                            {{ trans('home.sidebar.opening_hours.Sunday') }} : 16:00 – 21:00,<br />
+                            {{ trans('home.sidebar.opening_hours.Sunday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }} : 16:00 – 21:00,<br />
+                            {{ trans('home.sidebar.opening_hours.Friday') }} , {{ trans('home.sidebar.opening_hours.Saturday') }} : 16:00 – 21:30,<br />
                         </p>
                         <div class="line"></div>
                         <ul class="list-social">
@@ -142,10 +144,9 @@
                             <h5>{{ trans('home.footer.opening_time') }}</h5>
                         </div>
                         <ul>
-                            <li>{{ trans('home.sidebar.opening_hours.Monday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }}: 11:30 - 21:00</li>
-                            <li>{{ trans('home.sidebar.opening_hours.Friday') }}: 11:30 - 22:00</li>
-                            <li>{{ trans('home.sidebar.opening_hours.Saturday') }}: 11:30 - 22:00</li>
-                            <li>{{ trans('home.sidebar.opening_hours.Sunday') }}: 16:00 - 21:00</li>
+                            <li>{{ trans('home.sidebar.opening_hours.Sunday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }}: 16:00 - 21:00</li>
+                            <li>{{ trans('home.sidebar.opening_hours.Friday') }}: 16:00 - 21:30</li>
+                            <li>{{ trans('home.sidebar.opening_hours.Saturday') }}: 16:00 - 21:30</li>
                         </ul>
                     </div>
                 </div>
