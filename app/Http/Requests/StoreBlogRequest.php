@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
 /**
@@ -22,10 +22,11 @@ use OpenApi\Annotations as OA;
 class StoreBlogRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
-        return [
+        return array_merge([
             'title'           => ['required', 'string', 'max:255'],
             'description'     => ['required', 'string', 'max:255'],
             'body'            => ['required'],
@@ -33,19 +34,17 @@ class StoreBlogRequest extends FormRequest
             'categories_id.*' => ['required', 'integer', 'exists:categories,id'],
             'tags'            => ['nullable', 'array'],
             'tags.*'          => ['required', 'string', 'max:255'],
-            'seo_title'       => ['nullable', 'string', 'max:255'],
-            'seo_description' => ['nullable', 'string', 'max:255'],
             'image'           => ['nullable', 'image', 'max:2048', 'mimes:jpeg,jpg,png'],
             'published'       => ['required', 'boolean'],
-        ];
+        ], $this->getSeoRules());
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'published'       => true,
-            'seo_title'       => $this->seo_title ?? $this->title,
-            'seo_description' => $this->seo_description ?? Str::limit($this->description, 80),
+            'published' => true,
         ]);
+        
+        $this->prepareSeoForValidation();
     }
 }

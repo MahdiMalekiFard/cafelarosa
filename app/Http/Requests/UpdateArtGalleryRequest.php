@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Enums\ArtGalleryTypeEnum;
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Annotations as OA;
 
@@ -22,6 +23,7 @@ use OpenApi\Annotations as OA;
 class UpdateArtGalleryRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
@@ -29,5 +31,10 @@ class UpdateArtGalleryRequest extends FormRequest
         return array_merge($rules, [
 
         ]);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->prepareSeoForValidation();
     }
 }

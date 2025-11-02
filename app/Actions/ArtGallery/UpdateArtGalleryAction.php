@@ -6,6 +6,7 @@ use App\Actions\Translation\SyncTranslationAction;
 use App\Models\ArtGallery;
 use App\Repositories\ArtGallery\ArtGalleryRepositoryInterface;
 use App\Services\File\FileService;
+use App\Services\SeoOption\SeoOptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -19,6 +20,7 @@ class UpdateArtGalleryAction
         private readonly ArtGalleryRepositoryInterface $repository,
         private readonly SyncTranslationAction $syncTranslationAction,
         private readonly FileService $fileService,
+        private readonly SeoOptionService $seoOptionService
     )
     {
     }
@@ -46,6 +48,8 @@ class UpdateArtGalleryAction
                 $artGallery,
                 collection: 'gallery',
             );
+
+            $this->seoOptionService->update($artGallery, $payload);
 
             return $artGallery->refresh();
         });

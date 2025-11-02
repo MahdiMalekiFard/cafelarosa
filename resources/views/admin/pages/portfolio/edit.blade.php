@@ -37,7 +37,7 @@
 
         </x-admin.widget.card>
 
-        <div class="col-lg-3 mt-5 mt-lg-0">
+        <div class="col-lg-4 mt-5 mt-lg-0">
             <x-admin.widget.card class="">
 
                 <x-admin.element.dropify

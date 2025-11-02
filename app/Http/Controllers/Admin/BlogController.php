@@ -13,6 +13,7 @@ use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\SeoOption;
 use App\Repositories\Blog\BlogRepositoryInterface;
 use App\Services\AdvancedSearchFields\AdvancedSearchFieldsService;
 use App\Yajra\Column\ActionColumn;
@@ -145,11 +146,18 @@ class BlogController extends BaseWebController
     public function blogList(BlogRepositoryInterface $repository)
     {
         $blogs = $repository->query()->where('published', BooleanEnum::ENABLE)->get();
-        return view('web.pages.blog-list', compact('blogs'));
+        $seo = (object)[
+            'title'       => 'Blog – Nyheder og Artikler fra Café La Rosa',
+            'description' => 'Læs spændende artikler om italiensk mad, opskrifter, og nyheder fra Café La Rosa i Kolding.',
+            'canonical'   => url()->current(),
+            'robots_meta' => \App\Enums\SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
+        return view('web.pages.blog-list', compact('blogs', 'seo'));
     }
 
     public function blogDetail(string $locale, Blog $blog)
     {
-        return view('web.pages.blog-detail', ['blog' => $blog]);
+        $seo = $blog->seoOption()->first();
+        return view('web.pages.blog-detail', ['blog' => $blog, 'seo' => $seo]);
     }
 }

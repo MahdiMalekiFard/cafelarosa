@@ -1,5 +1,5 @@
 @php use App\Models\Menu; @endphp
-@php @endphp
+
 @extends('web.layout.main')
 
 @push('js')

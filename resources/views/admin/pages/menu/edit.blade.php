@@ -58,6 +58,8 @@
             default="{{$menu->getFirstMediaUrl('image','480')}}"
         />
 
+        <x-admin.shared.seo-config :item="$menu"/>
+
         @slot('footer')
             <x-admin.widget.form-sumbit :back-route="route('admin.menu.index')"/>
         @endslot

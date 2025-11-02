@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\BooleanEnum;
 use App\Traits\HasCategories;
+use App\Traits\HasSeoOption;
 use App\Traits\HasSlugFromTranslationTitle;
 use App\Traits\HasView;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,6 +32,7 @@ class Portfolio extends Model implements HasMedia
     use HasSlugFromTranslationTitle;
     use SchemalessAttributesTrait;
     use HasCategories;
+    use HasSeoOption;
     use HasView;
     use HasTags;
 

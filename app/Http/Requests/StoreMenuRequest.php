@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -23,10 +24,11 @@ use OpenApi\Annotations as OA;
 class StoreMenuRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
-        return [
+        return array_merge([
             'title'       => ['required', 'string', 'max:255'],
             'parent_id'   => ['nullable', 'integer', 'exists:menus,id'],
             'description' => ['required', 'string', 'max:255'],
@@ -39,14 +41,16 @@ class StoreMenuRequest extends FormRequest
                 Rule::requiredIf(fn() => in_array($this->input('parent_id'), [null, ''], true) || $this->input('parent_id') === 'null'),
                 'image', 'max:2048', 'mimes:jpeg,jpg,png',
             ],
-            'published'   => ['required', 'boolean'],
-        ];
+            'published' => ['required', 'boolean'],
+        ], $this->getSeoRules());
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'published' => $this->input('published') ?? true
+            'published' => $this->input('published') ?? true,
         ]);
+        
+        $this->prepareSeoForValidation();
     }
 }

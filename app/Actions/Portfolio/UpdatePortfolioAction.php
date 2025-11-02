@@ -6,6 +6,7 @@ use App\Actions\Translation\SyncTranslationAction;
 use App\Models\Portfolio;
 use App\Repositories\Portfolio\PortfolioRepositoryInterface;
 use App\Services\File\FileService;
+use App\Services\SeoOption\SeoOptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -19,6 +20,7 @@ class UpdatePortfolioAction
         private readonly PortfolioRepositoryInterface $repository,
         private readonly SyncTranslationAction $syncTranslationAction,
         private readonly FileService $fileService,
+        private readonly SeoOptionService $seoOptionService
     )
     {
     }
@@ -44,11 +46,12 @@ class UpdatePortfolioAction
     public function handle(Portfolio $portfolio, array $payload): Portfolio
     {
         return DB::transaction(function () use ($portfolio, $payload) {
-            $this->repository->update($portfolio, Arr::only($payload, ['published', 'seo_title', 'seo_description', 'slug']));
+            $this->repository->update($portfolio, Arr::only($payload, ['published', 'slug']));
             $this->syncTranslationAction->handle($portfolio, Arr::only($payload, ['title', 'description', 'body']));
             $portfolio->categories()->sync(Arr::get($payload, 'categories_id', []));
             $portfolio->tags()->sync(Arr::get($payload, 'tags_id', []));
             $this->fileService->addMedia($portfolio);
+            $this->seoOptionService->update($portfolio, $payload);
 
             return $portfolio->refresh();
         });

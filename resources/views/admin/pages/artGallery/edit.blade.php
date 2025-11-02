@@ -44,6 +44,8 @@
                 })->toJson()"
         />
 
+        <x-admin.shared.seo-config :item="$artGallery"/>
+
         @slot('footer')
             <x-admin.widget.form-sumbit :back-route="route('admin.art-gallery.index')"/>
         @endslot

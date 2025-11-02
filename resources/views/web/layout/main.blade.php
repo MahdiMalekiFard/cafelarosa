@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <title>Café La Rosa Kolding</title>
+    <title>
+        {{ $seo?->title ?? 'Italiensk mad med Café La Rosa' }}
+    </title>
     <meta name="keywords" content="
         Café La Rosa Kolding, italiensk café Kolding, autentiske italienske retter,
         lasagne, tagliatelle al ragù, maccheroni all’amatriciana, tagliatelle al salmone,
@@ -11,6 +13,65 @@
         omelette farciti, formaggi misti, panino di Parma, kaffe bar Kolding,
         økologiske retter, vegetarretter, vinmenu, cocktails, brunch Kolding"
     >
+    @if(!empty($seo?->description))
+        <meta name="description" content="{{ $seo->description }}">
+    @else
+        <meta name="description" content="Café La Rosa serverer ægte italiensk mad i Kolding.">
+    @endif
+    <link rel="canonical" href="{{ $seo?->canonical ?? url()->current() }}">
+    <meta name="robots" content="{{ $seo?->robots_meta?->title() ?? 'index, follow' }}">
+    @if(request()->routeIs('contact-us-page'))
+        <script type="application/ld+json">
+            {
+                  "@context": "https://schema.org",
+                  "@type": "Restaurant",
+                  "name": "Café La Rosa",
+                  "image": @json(asset('img/og-main.jpg'), JSON_THROW_ON_ERROR),
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Klostergade 19",
+                    "addressLocality": "Kolding",
+                    "postalCode": "6000",
+                    "addressCountry": "DK"
+                  },
+                  "telephone": "+45 91 71 97 67",
+                  "email": "info@cafelarosa.dk",
+                  "url": @json(url()->current(), JSON_THROW_ON_ERROR),
+                  "openingHoursSpecification": [
+                        {
+                              "@type": "OpeningHoursSpecification",
+                              "dayOfWeek": [
+                                "Sunday",
+                                "Monday",
+                                "Tuesday",
+                                "Wednesday",
+                                "Thursday"
+                              ],
+                              "opens": "16:00",
+                              "closes": "21:00"
+                        },
+                        {
+                              "@type": "OpeningHoursSpecification",
+                              "dayOfWeek": [
+                                "Friday",
+                                "Saturday"
+                              ],
+                              "opens": "16:00",
+                              "closes": "21:30"
+                        }
+                  ]
+            }
+        </script>
+    @endif
+
+    {{--  open graph --}}
+    <meta property="og:site_name" content="Café La Rosa">
+    <meta property="og:title" content="{{ $seo?->title ?? 'Café La Rosa – Italiensk Mad i Kolding' }}">
+    <meta property="og:description" content="{{ $seo?->description ?? 'Ægte italiensk mad i hjertet af Kolding.' }}">
+    <meta property="og:image" content="{{ asset('img/og-image.jpg') }}">
+    <meta property="og:url" content="{{ $seo?->canonical ?? url()->current() }}">
+    <meta property="og:type" content="website">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="/css/bootstrap.css">
@@ -44,7 +105,7 @@
                     <div class="list-info">
                         <ul>
                             <li><i class="fa fa-envelope-open"></i> Info@cafelarosa.dk</li>
-                            <li><i class="fa fa-map"></i> Klostergade 19, 6000 Kolding, Denmark </li>
+                            <li><i class="fa fa-map"></i> Klostergade 19, 6000 Kolding, Denmark</li>
                         </ul>
                     </div>
                 </div>
@@ -101,9 +162,9 @@
                         <p>Café La Rosa, Klostergade 19, 6000 Kolding, Denmark</p>
                         <p>Info@cafelarosa.dk</p>
                         <div class="line"></div>
-                        <p>{{ trans('home.sidebar.opening_hours.text') }} <br />
-                            {{ trans('home.sidebar.opening_hours.Sunday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }} : 16:00 – 21:00,<br />
-                            {{ trans('home.sidebar.opening_hours.Friday') }} , {{ trans('home.sidebar.opening_hours.Saturday') }} : 16:00 – 21:30,<br />
+                        <p>{{ trans('home.sidebar.opening_hours.text') }} <br/>
+                            {{ trans('home.sidebar.opening_hours.Sunday') }} - {{ trans('home.sidebar.opening_hours.Thursday') }} : 16:00 – 21:00,<br/>
+                            {{ trans('home.sidebar.opening_hours.Friday') }} , {{ trans('home.sidebar.opening_hours.Saturday') }} : 16:00 – 21:30,<br/>
                         </p>
                         <div class="line"></div>
                         <ul class="list-social">

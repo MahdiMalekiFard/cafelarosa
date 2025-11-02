@@ -11,6 +11,7 @@ use App\Enums\ArtGalleryTypeEnum;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
 use App\Models\Page;
+use App\Models\SeoOption;
 use App\Services\AdvancedSearchFields\AdvancedSearchFieldsService;
 use App\Repositories\Page\PageRepositoryInterface;
 use App\Repositories\ArtGallery\ArtGalleryRepositoryInterface;
@@ -77,10 +78,12 @@ class PageController extends BaseWebController
 
     public function about(PageRepositoryInterface $repository)
     {
+        /** @var Page $about */
         $about = $repository->query()->where('type', PageTypeEnum::ABOUT_US)->first();
+        $seo = $about?->seoOption()->first();
         $opinions = resolve(OpinionRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE]);
         $artGalleries = resolve(ArtGalleryRepositoryInterface::class)->query()->get();
 
-        return view('web.pages.about', compact('about', 'opinions', 'artGalleries'));
+        return view('web.pages.about', compact('about', 'opinions', 'artGalleries', 'seo'));
     }
 }

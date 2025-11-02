@@ -54,13 +54,21 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}']], 
         $opinions = resolve(OpinionRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE]);
         $portfolios = resolve(PortfolioRepositoryInterface::class)->get(['limit' => 4, 'published' => BooleanEnum::ENABLE]);
 
+        $seo = (object)[
+            'title'       => 'Café La Rosa Kolding',
+            'description' => 'Café La Rosa serverer frisklavet italiensk mad i Kolding. Nyd pizza, pasta og italienske specialiteter.',
+            'canonical'   => url()->current(),
+            'robots_meta' => \App\Enums\SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
+
         return view('web.home', [
             'menus'      => $menus,
             'sliders'    => $sliders,
             'about_page' => $about,
             'opinions'   => $opinions,
             'blogs'      => $blogs,
-            'portfolios' => $portfolios
+            'portfolios' => $portfolios,
+            'seo'        => $seo,
         ]);
     })->name('index');
 

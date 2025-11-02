@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Annotations as OA;
 
@@ -21,6 +22,7 @@ use OpenApi\Annotations as OA;
 class UpdatePortfolioRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
@@ -35,5 +37,7 @@ class UpdatePortfolioRequest extends FormRequest
         $this->merge([
             'published' => true,
         ]);
+        
+        $this->prepareSeoForValidation();
     }
 }

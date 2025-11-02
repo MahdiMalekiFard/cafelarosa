@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\PageTypeEnum;
 use App\Helpers\Constants;
+use App\Traits\HasSeoOption;
 use App\Traits\HasTranslationAuto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class Page extends Model implements HasMedia
     use HasTranslationAuto;
     use SchemalessAttributesTrait;
     use InteractsWithMedia;
+    use HasSeoOption;
 
     protected $fillable = [
         'type', 'languages',

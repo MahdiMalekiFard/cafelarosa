@@ -5,6 +5,7 @@ namespace App\Actions\Page;
 use App\Actions\Translation\SyncTranslationAction;
 use App\Models\Page;
 use App\Repositories\Page\PageRepositoryInterface;
+use App\Services\SeoOption\SeoOptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -17,6 +18,7 @@ class StorePageAction
     public function __construct(
         private readonly PageRepositoryInterface $repository,
         private readonly SyncTranslationAction $syncTranslationAction,
+        private readonly SeoOptionService $seoOptionService
     )
     {
     }
@@ -32,6 +34,7 @@ class StorePageAction
             /** @var Page $model */
             $model = $this->repository->store(Arr::only($payload, ['type']));
             $this->syncTranslationAction->handle($model, Arr::only($payload, ['title', 'body']));
+            $this->seoOptionService->create($model, $payload);
 
             return $model->refresh();
         });

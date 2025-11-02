@@ -48,6 +48,8 @@
             name="image"
         />
 
+        <x-admin.shared.seo-config />
+
         @slot('footer')
             <x-admin.widget.form-sumbit :back-route="route('admin.menu.index')"/>
         @endslot

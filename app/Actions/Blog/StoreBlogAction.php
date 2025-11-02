@@ -8,6 +8,7 @@ use App\Actions\Translation\SyncTranslationAction;
 use App\Models\Blog;
 use App\Repositories\Blog\BlogRepositoryInterface;
 use App\Services\File\FileService;
+use App\Services\SeoOption\SeoOptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,7 +21,8 @@ class StoreBlogAction
     public function __construct(
         private readonly BlogRepositoryInterface $repository,
         private readonly SyncTranslationAction $syncTranslationAction,
-        private readonly FileService $fileService
+        private readonly FileService $fileService,
+        private readonly SeoOptionService $seoOptionService
     ) {}
 
     /**
@@ -30,7 +32,7 @@ class StoreBlogAction
     {
         return DB::transaction(function () use ($payload) {
             $model = $this->repository->store(array_merge(Arr::only($payload, [
-                'slug', 'seo_title', 'seo_description', 'published', 'type',
+                'slug', 'published', 'type',
             ]), [
                 'user_id' => auth()->id() ?? 1,
             ]));
@@ -38,6 +40,7 @@ class StoreBlogAction
             $model->categories()->sync(Arr::get($payload, 'categories_id', []));
             $model->tags()->sync(Arr::get($payload, 'tags_id', []));
             $this->fileService->addMedia($model);
+            $this->seoOptionService->create($model, $payload);
             return $model->refresh();
         });
     }

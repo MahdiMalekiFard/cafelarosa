@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\BooleanEnum;
+use App\Traits\HasSeoOption;
 use App\Traits\HasSlugFromTranslationTitle;
 use App\Traits\HasTranslationAuto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ class Service extends Model implements HasMedia
     use HasSlugFromTranslationTitle;
     use HasTranslationAuto;
     use InteractsWithMedia;
+    use HasSeoOption;
 
     public array $translatable = [
         'title', 'description',

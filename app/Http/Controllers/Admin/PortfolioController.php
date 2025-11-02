@@ -143,11 +143,18 @@ class PortfolioController extends BaseWebController
         $portfolios = $repository->query([
             'published' => BooleanEnum::ENABLE,
         ])->get();
-        return view('web.pages.portfolio-list', compact('portfolios'));
+        $seo = (object) [
+            'title' => 'Portefølje – Café La Rosa i Kolding',
+            'description' => 'Se vores portefølje med billeder af italienske retter, interiør og events hos Café La Rosa i Kolding.',
+            'canonical' => url()->current(),
+            'robots_meta' => \App\Enums\SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
+        return view('web.pages.portfolio-list', compact('portfolios', 'seo'));
     }
 
     public function portfolioDetail(string $locale, Portfolio $portfolio)
     {
-        return view('web.pages.portfolio-detail', compact('portfolio'));
+        $seo = $portfolio->seoOption()->first();
+        return view('web.pages.portfolio-detail', compact('portfolio', 'seo'));
     }
 }

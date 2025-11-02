@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Enums\PageTypeEnum;
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
@@ -23,13 +24,19 @@ use OpenApi\Annotations as OA;
 class StorePageRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
-        return [
+        return array_merge([
             'title' => ['required', 'string', 'max:255'],
             'body'  => ['required', 'string'],
             'type'  => ['required', Rule::in(PageTypeEnum::values())],
-        ];
+        ], $this->getSeoRules());
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->prepareSeoForValidation();
     }
 }

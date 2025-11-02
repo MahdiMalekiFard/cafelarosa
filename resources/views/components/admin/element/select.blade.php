@@ -1,4 +1,4 @@
-@php use App\Enums\BooleanEnum;use App\Enums\GenderEnum;use App\Enums\NumberEnum;use App\Enums\StarEnum;use App\Enums\YesNoEnum;use App\Enums\CategoryTypeEnum;use App\Enums\ArtGalleryTypeEnum;@endphp
+@php use App\Enums\BooleanEnum;use App\Enums\GenderEnum;use App\Enums\NumberEnum;use App\Enums\StarEnum;use App\Enums\YesNoEnum;use App\Enums\CategoryTypeEnum;use App\Enums\ArtGalleryTypeEnum;use App\Enums\SeoRobotsMetaEnum;@endphp
 @props([
     'class'=>null,
     'parentClass'=>null,
@@ -88,6 +88,11 @@
         @elseif($type === ArtGalleryTypeEnum::class)
             <option value="">{{__('general.please_select_an_option')}}</option>
             @foreach(ArtGalleryTypeEnum::cases() as $case)
+                <option value="{{$case->value}}" {{$case->value==$value?'selected':''}}>{{$case->title()}}</option>
+            @endforeach
+        @elseif($type === SeoRobotsMetaEnum::class)
+            <option value="">{{__('general.please_select_an_option')}}</option>
+            @foreach(SeoRobotsMetaEnum::cases() as $case)
                 <option value="{{$case->value}}" {{$case->value==$value?'selected':''}}>{{$case->title()}}</option>
             @endforeach
         @elseif($options)

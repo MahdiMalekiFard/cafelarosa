@@ -8,6 +8,7 @@ use App\Actions\ArtGallery\DeleteArtGalleryAction;
 use App\Actions\ArtGallery\StoreArtGalleryAction;
 use App\Actions\ArtGallery\UpdateArtGalleryAction;
 use App\Enums\ArtGalleryTypeEnum;
+use App\Enums\SeoRobotsMetaEnum;
 use App\Http\Requests\StoreArtGalleryRequest;
 use App\Http\Requests\UpdateArtGalleryRequest;
 use App\Models\ArtGallery;
@@ -113,11 +114,18 @@ class ArtGalleryController extends BaseWebController
     public function galleryList(ArtGalleryRepositoryInterface $repository)
     {
         $artGalleries = $repository->query()->get();
-        return view('web.pages.gallery-list', compact('artGalleries'));
+        $seo = (object) [
+            'title' => 'Galleri – Café La Rosa i Kolding',
+            'description' => 'Se billeder fra Café La Rosa – italienske retter, hyggelig atmosfære og smukke øjeblikke i vores restaurant i Kolding.',
+            'canonical' => url()->current(),
+            'robots_meta' => SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
+        return view('web.pages.gallery-list', compact('artGalleries', 'seo'));
     }
 
     public function galleryDetail(string $locale, ArtGallery $artGallery)
     {
-        return view('web.pages.gallery-detail', compact('artGallery'));
+        $seo = $artGallery?->seoOption()->first();
+        return view('web.pages.gallery-detail', compact('artGallery', 'seo'));
     }
 }

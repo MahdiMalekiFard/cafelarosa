@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\HasSeoValidation;
 use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Annotations as OA;
 
@@ -21,6 +22,7 @@ use OpenApi\Annotations as OA;
 class UpdateMenuRequest extends FormRequest
 {
     use FillAttributes;
+    use HasSeoValidation;
 
     public function rules(): array
     {
@@ -35,7 +37,9 @@ class UpdateMenuRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'published' => $this->input('published') ?? true
+            'published' => $this->input('published') ?? true,
         ]);
+        
+        $this->prepareSeoForValidation();
     }
 }

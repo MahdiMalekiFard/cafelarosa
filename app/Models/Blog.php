@@ -9,6 +9,7 @@ use App\Traits\HasCategories;
 use App\Traits\HasComment;
 use App\Traits\HasLike;
 use App\Traits\HasSchemalessAttributes;
+use App\Traits\HasSeoOption;
 use App\Traits\HasSlugFromTranslationTitle;
 use App\Traits\HasTranslationAuto;
 use App\Traits\HasUser;
@@ -36,6 +37,7 @@ class Blog extends Model implements HasMedia
         HasFactory,
         HasLike,
         HasSchemalessAttributes,
+        HasSeoOption,
         HasSlugFromTranslationTitle,
         HasTags,
         HasTranslationAuto,

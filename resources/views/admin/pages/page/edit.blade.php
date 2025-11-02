@@ -26,6 +26,8 @@
 
         <input hidden name="type" value="{{ $page->type->value }}">
 
+        <x-admin.shared.seo-config :item="$page"/>
+
         @slot('footer')
             <x-admin.widget.form-sumbit :back-route="route('admin.page.index')"/>
         @endslot

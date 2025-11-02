@@ -6,6 +6,7 @@ use App\Actions\Translation\SyncTranslationAction;
 use App\Models\Menu;
 use App\Repositories\Menu\MenuRepositoryInterface;
 use App\Services\File\FileService;
+use App\Services\SeoOption\SeoOptionService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -19,6 +20,7 @@ class StoreMenuAction
         private readonly MenuRepositoryInterface $repository,
         private readonly SyncTranslationAction $syncTranslationAction,
         private readonly FileService $fileService,
+        private readonly SeoOptionService $seoOptionService
     )
     {
     }
@@ -37,6 +39,7 @@ class StoreMenuAction
             $this->fileService->addMedia($model);
             $this->fileService->addMedia($model, 'left_image', 'left_image');
             $this->fileService->addMedia($model, 'right_image', 'right_image');
+            $this->seoOptionService->create($model, $payload);
             return $model->refresh();
         });
     }

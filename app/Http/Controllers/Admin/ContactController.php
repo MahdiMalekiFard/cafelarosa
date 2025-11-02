@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Actions\Contact\DeleteContactAction;
 use App\Actions\Contact\StoreContactAction;
 use App\Actions\Contact\UpdateContactAction;
+use App\Enums\SeoRobotsMetaEnum;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
@@ -65,7 +66,7 @@ class ContactController extends BaseWebController
      */
     public function show(Contact $contact)
     {
-        return view('admin.pages.contact.show',compact('contact'));
+        return view('admin.pages.contact.show', compact('contact'));
     }
 
     /**
@@ -77,7 +78,7 @@ class ContactController extends BaseWebController
      */
     public function edit(Contact $contact)
     {
-        return view('admin.pages.contact.edit',compact('contact'));
+        return view('admin.pages.contact.edit', compact('contact'));
     }
 
     /**
@@ -90,7 +91,7 @@ class ContactController extends BaseWebController
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        UpdateContactAction::run($contact,$request->validated());
+        UpdateContactAction::run($contact, $request->validated());
         return redirect(route('admin.contact.index'))->withToastSuccess(trans('general.update_success', ['model' => trans('contact.model')]));
     }
 
@@ -109,7 +110,13 @@ class ContactController extends BaseWebController
 
     public function contactUs()
     {
-        return view('web.pages.contact-us');
+        $seo = (object)[
+            'title'       => 'Kontakt os – Café La Rosa i Kolding',
+            'description' => 'Kontakt Café La Rosa for bordreservation, spørgsmål eller feedback. Du finder os på Klostergade 19, 6000 Kolding.',
+            'canonical'   => url()->current(),
+            'robots_meta' => SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
+        return view('web.pages.contact-us', compact('seo'));
     }
 
     public function storeContactFromWeb(StoreContactRequest $request): JsonResponse

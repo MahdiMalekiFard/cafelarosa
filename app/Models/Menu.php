@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\BooleanEnum;
+use App\Traits\HasSeoOption;
 use App\Traits\HasTranslationAuto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ class Menu extends Model implements HasMedia
     use HasTranslationAuto;
     use InteractsWithMedia;
     use SchemalessAttributesTrait;
+    use HasSeoOption;
 
     protected $fillable = [
         'published', 'languages', 'parent_id',

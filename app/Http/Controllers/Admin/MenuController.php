@@ -9,6 +9,7 @@ use App\Actions\Menu\StoreMenuAction;
 use App\Actions\Menu\ToggleMenuAction;
 use App\Actions\Menu\UpdateMenuAction;
 use App\Enums\BooleanEnum;
+use App\Enums\SeoRobotsMetaEnum;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Menu;
@@ -140,6 +141,12 @@ class MenuController extends BaseWebController
 
     public function menuList(MenuRepositoryInterface $repository)
     {
+        $seo = (object)[
+            'title'       => 'Menu – Italienske retter & drikkevarer | Café La Rosa Kolding',
+            'description' => 'Udforsk vores menu med autentiske italienske retter – pizza, pasta, lasagne, risotto og frisklavede drikkevarer hos Café La Rosa i Kolding.',
+            'canonical'   => url()->current(),
+            'robots_meta' => SeoRobotsMetaEnum::INDEX_FOLLOW,
+        ];
         $menus = $repository->query(['sort' => 'created_at', 'has_parent' => false])
                             ->with([
                                 'children' => fn($q) => $q->where('published', \App\Enums\BooleanEnum::ENABLE)
@@ -157,7 +164,7 @@ class MenuController extends BaseWebController
 
                                 foreach ($menu->children as $child) {
                                     $items = $child->items;
-                                    $take  = min($remain, $items->count());
+                                    $take = min($remain, $items->count());
 
                                     if ($take > 0) {
                                         $firstBuckets[] = ['submenu' => $child, 'items' => $items->take($take)->values()];
@@ -179,6 +186,6 @@ class MenuController extends BaseWebController
                             });
 
 
-        return view('web.pages.menu-list', compact('menus'));
+        return view('web.pages.menu-list', compact('menus', 'seo'));
     }
 }
