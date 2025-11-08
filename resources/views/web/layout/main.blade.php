@@ -20,6 +20,7 @@
     @endif
     <link rel="canonical" href="{{ $seo?->canonical ?? url()->current() }}">
     <meta name="robots" content="{{ $seo?->robots_meta?->title() ?? 'index, follow' }}">
+    <meta name="google-site-verification" content="kMl6hx82mFGQdaqW3UomVwjvJDsl2SKo2k-FRkX-XKY" />
     @if(request()->routeIs('contact-us-page'))
         <script type="application/ld+json">
             {
