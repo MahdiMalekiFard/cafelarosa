@@ -20,7 +20,19 @@
     @endif
     <link rel="canonical" href="{{ $seo?->canonical ?? url()->current() }}">
     <meta name="robots" content="{{ $seo?->robots_meta?->title() ?? 'index, follow' }}">
+
+    <!-- Google Search Console -->
     <meta name="google-site-verification" content="kMl6hx82mFGQdaqW3UomVwjvJDsl2SKo2k-FRkX-XKY" />
+    <!-- Google Analytic -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QN9KNKN4W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-3QN9KNKN4W');
+    </script>
+
     @if(request()->routeIs('contact-us-page'))
         <script type="application/ld+json">
             {
